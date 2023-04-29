@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../common_widgets/buttons.dart';
 import '../common_widgets/textfield.dart';
+import '../utils/constants/colors.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -35,7 +36,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 height: 220,
                 width: double.infinity,
                 decoration: const BoxDecoration(
-                    color: Color(0xffD31919),
+                    color: primaryColor,
                     borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(80.0),
                         bottomRight: Radius.circular(80.0))),
@@ -45,7 +46,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   child: const Text(
                     'Register',
                     style: TextStyle(
-                        color: Color(0xfffefefe),
+                        color: sosWhite,
                         fontSize: 26,
                         fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
@@ -67,7 +68,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         keyboardType: TextInputType.emailAddress,
                         prefixIcon: const Icon(
                           Icons.person,
-                          color: Color(0xffD31919),
+                          color: primaryColor,
                         ),
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -87,7 +88,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         keyboardType: TextInputType.number,
                         prefixIcon: const Icon(
                           Icons.phone,
-                          color: Color(0xffD31919),
+                          color: primaryColor,
                         ),
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -107,7 +108,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         keyboardType: TextInputType.emailAddress,
                         prefixIcon: const Icon(
                           Icons.email,
-                          color: Color(0xffD31919),
+                          color: primaryColor,
                         ),
                         validator: (value) {
                           if (value!.isEmpty || !value.contains('@')) {
@@ -126,7 +127,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         isPaswordType: _obscureText,
                         prefixIcon: const Icon(
                           Icons.key,
-                          color: Color(0xffD31919),
+                          color: primaryColor,
                         ),
                         suffixIcon: IconButton(
                           onPressed: () {
@@ -159,8 +160,8 @@ class _SignupScreenState extends State<SignupScreen> {
                         height: 50,
                         width: 340,
                         text: 'REGISTER',
-                        textColor: const Color(0xfffefefe),
-                        backgroundColor: const Color(0xffD31919),
+                        textColor: sosWhite,
+                        backgroundColor: primaryColor,
                         onPressed: () {
                           if (_formfield.currentState!.validate()) {
                             _usernameController.text.trim();
@@ -183,7 +184,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             TextSpan(
                                 text: " Login Now ",
                                 style: const TextStyle(
-                                    fontSize: 16, color: Color(0xffD31919)),
+                                    fontSize: 16, color: primaryColor),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
                                     Navigator.of(context).pushNamed('/');

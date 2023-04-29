@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../utils/constants/colors.dart';
+
 Widget reusableTextField(
   {String? labelText,
   String? hintText,
@@ -28,7 +30,7 @@ Widget reusableTextField(
       labelStyle: TextStyle(color: Colors.black.withOpacity(0.8)),
       filled: true,
       floatingLabelBehavior: FloatingLabelBehavior.never,
-      fillColor: const Color(0xffECEAEA),
+      fillColor: sosGrey,
       border: OutlineInputBorder(
         borderSide: BorderSide.none,
         borderRadius: BorderRadius.circular(30.0),

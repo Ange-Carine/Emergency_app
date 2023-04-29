@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../common_widgets/buttons.dart';
 import '../common_widgets/textfield.dart';
+import '../utils/constants/colors.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -33,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 300,
                 width: double.infinity,
                 decoration: const BoxDecoration(
-                    color: Color(0xffD31919),
+                    color: primaryColor,
                     borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(80.0),
                         bottomRight: Radius.circular(80.0))),
@@ -43,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: const Text(
                     'Login',
                     style: TextStyle(
-                        color: Color(0xfffefefe),
+                        color: sosWhite,
                         fontSize: 26,
                         fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
@@ -65,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         keyboardType: TextInputType.emailAddress,
                         prefixIcon: const Icon(
                           Icons.email,
-                          color: Color(0xffD31919),
+                          color: primaryColor,
                         ),
                         validator: (value) {
                           if (value!.isEmpty || !value.contains('@')) {
@@ -90,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         isPaswordType: _obscureText,
                         prefixIcon: const Icon(
                           Icons.key,
-                          color: Color(0xffD31919),
+                          color: primaryColor,
                         ),
                         suffixIcon: IconButton(
                           onPressed: () {
@@ -112,8 +113,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 50,
                         width: 340,
                         text: 'LOGIN',
-                        textColor: const Color(0xfffefefe),
-                        backgroundColor: const Color(0xffD31919),
+                        textColor: sosWhite,
+                        backgroundColor: primaryColor,
                         onPressed: () {
                           if (_formfield.currentState!.validate()) {
                             _emailController.text.trim();
@@ -134,7 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             TextSpan(
                                 text: " Register Now ",
                                 style: const TextStyle(
-                                    fontSize: 16, color: Color(0xffD31919)),
+                                    fontSize: 16, color: primaryColor),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
                                     Navigator.of(context)
