@@ -67,6 +67,12 @@ class _SignupScreenState extends State<SignupScreen> {
                           Icons.person,
                           color: Color(0xffD31919),
                         ),
+                        validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Please enter your full name';
+                            }
+                            return null;
+                          },
                       ),
                       const SizedBox(
                         height: 20,
@@ -81,6 +87,12 @@ class _SignupScreenState extends State<SignupScreen> {
                           Icons.phone,
                           color: Color(0xffD31919),
                         ),
+                        validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Please enter your phone number';
+                            }
+                            return null;
+                          },
                       ),
                       const SizedBox(
                         height: 20,
@@ -95,6 +107,12 @@ class _SignupScreenState extends State<SignupScreen> {
                           Icons.email,
                           color: Color(0xffD31919),
                         ),
+                        validator: (value) {
+                          if (value!.isEmpty || !value.contains('@')) {
+                            return 'Please enter a valid email';
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(
                         height: 20,
