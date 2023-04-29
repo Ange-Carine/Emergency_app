@@ -1,8 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-import 'Common_widgets/buttons.dart';
-import 'Common_widgets/textfield.dart';
+import '../common_widgets/buttons.dart';
+import '../common_widgets/textfield.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -118,6 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           if (_formfield.currentState!.validate()) {
                             _emailController.text.trim();
                             _passwordController.text.trim();
+                            Navigator.of(context).pushNamed('/homescreen');
                           }
                         },
                       ),

@@ -1,8 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-import 'Common_widgets/buttons.dart';
-import 'Common_widgets/textfield.dart';
+import '../common_widgets/buttons.dart';
+import '../common_widgets/textfield.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -12,7 +12,6 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-  
   final _formfield = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _usernameController = TextEditingController();
@@ -20,6 +19,8 @@ class _SignupScreenState extends State<SignupScreen> {
   final _passwordController = TextEditingController();
 
   bool _obscureText = true;
+  final _passwordRegex =
+      RegExp(r'^(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[^\w\s]).{7,}$');
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +40,8 @@ class _SignupScreenState extends State<SignupScreen> {
                         bottomLeft: Radius.circular(80.0),
                         bottomRight: Radius.circular(80.0))),
                 child: Padding(
-                  padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.2),
+                  padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.2),
                   child: const Text(
                     'Register',
                     style: TextStyle(
@@ -68,11 +70,11 @@ class _SignupScreenState extends State<SignupScreen> {
                           color: Color(0xffD31919),
                         ),
                         validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Please enter your full name';
-                            }
-                            return null;
-                          },
+                          if (value!.isEmpty) {
+                            return 'Please enter your full name';
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(
                         height: 20,
@@ -88,11 +90,11 @@ class _SignupScreenState extends State<SignupScreen> {
                           color: Color(0xffD31919),
                         ),
                         validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Please enter your phone number';
-                            }
-                            return null;
-                          },
+                          if (value!.isEmpty) {
+                            return 'Please enter your phone number';
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(
                         height: 20,
@@ -138,6 +140,17 @@ class _SignupScreenState extends State<SignupScreen> {
                                 : Icons.visibility_outlined,
                           ),
                         ),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter a password';
+                          } else if(_passwordController.text.length < 8) {
+                            return "Password length should be atleast 8 characters";
+                          // }else if (!_passwordRegex.hasMatch(value)) {
+                          //   return 'Password should Contain at least one uppercase \none numeric value and one special character';
+                          } else {
+                            return null;
+                          }
+                        },
                       ),
                       const SizedBox(
                         height: 35,
@@ -149,7 +162,13 @@ class _SignupScreenState extends State<SignupScreen> {
                         textColor: const Color(0xfffefefe),
                         backgroundColor: const Color(0xffD31919),
                         onPressed: () {
-                          
+                          if (_formfield.currentState!.validate()) {
+                            _usernameController.text.trim();
+                            _phoneController.text.trim();
+                            _emailController.text.trim();
+                            _passwordController.text.trim();
+                            Navigator.of(context).pushNamed('/login');
+                          }
                         },
                       ),
                       const SizedBox(

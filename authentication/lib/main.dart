@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'login_screen.dart';
-import 'signup_screen.dart';
+import 'home.dart';
+import 'authentication/login_screen.dart';
+import 'authentication/signup_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -28,6 +29,7 @@ class _MyAppState extends State<MyApp> {
        routes: {
         '/':(context) => const LoginScreen(),
         '/register':(context) => const SignupScreen(),
+        '/homescreen':(context) => const HomeScreen(),
       },
     );
   }
