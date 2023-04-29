@@ -12,18 +12,19 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-  final TextEditingController _usernameTextController = TextEditingController();
-  final TextEditingController _emailTextController = TextEditingController();
-  final TextEditingController _phoneTextController = TextEditingController();
-  final TextEditingController _passwordTextController = TextEditingController();
+  
+  final _formfield = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _usernameController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _passwordController = TextEditingController();
 
-  final _formKey = GlobalKey<FormState>();
-
+  bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     body: SizedBox(
+      body: SizedBox(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
@@ -37,9 +38,9 @@ class _SignupScreenState extends State<SignupScreen> {
                     borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(80.0),
                         bottomRight: Radius.circular(80.0))),
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 90),
-                  child: Text(
+                child: Padding(
+                  padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.2),
+                  child: const Text(
                     'Register',
                     style: TextStyle(
                         color: Color(0xfffefefe),
@@ -53,11 +54,11 @@ class _SignupScreenState extends State<SignupScreen> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
                 child: Form(
-                  key: _formKey,
+                  key: _formfield,
                   child: Column(
                     children: [
                       reusableTextField(
-                        controller: _usernameTextController,
+                        controller: _usernameController,
                         labelText: 'Full Name',
                         hintText: 'Full Name',
                         isPaswordType: false,
@@ -71,7 +72,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         height: 20,
                       ),
                       reusableTextField(
-                        controller: _phoneTextController,
+                        controller: _phoneController,
                         labelText: 'Phone',
                         hintText: 'Phone',
                         isPaswordType: false,
@@ -85,7 +86,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         height: 20,
                       ),
                       reusableTextField(
-                        controller: _emailTextController,
+                        controller: _emailController,
                         labelText: 'Email',
                         hintText: 'Email',
                         isPaswordType: false,
@@ -99,26 +100,39 @@ class _SignupScreenState extends State<SignupScreen> {
                         height: 20,
                       ),
                       reusableTextField(
-                        controller: _passwordTextController,
+                        controller: _passwordController,
                         labelText: 'Password',
                         hintText: 'Password',
-                        isPaswordType: true,
+                        isPaswordType: _obscureText,
                         prefixIcon: const Icon(
                           Icons.key,
                           color: Color(0xffD31919),
+                        ),
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _obscureText = !_obscureText;
+                            });
+                          },
+                          icon: Icon(
+                            _obscureText
+                                ? Icons.visibility_off_outlined
+                                : Icons.visibility_outlined,
+                          ),
                         ),
                       ),
                       const SizedBox(
                         height: 35,
                       ),
-                      
                       authButton(
                         height: 50,
                         width: 340,
                         text: 'REGISTER',
                         textColor: const Color(0xfffefefe),
                         backgroundColor: const Color(0xffD31919),
-                        onPressed: () {},
+                        onPressed: () {
+                          
+                        },
                       ),
                       const SizedBox(
                         height: 5,
@@ -126,22 +140,20 @@ class _SignupScreenState extends State<SignupScreen> {
                       Text.rich(
                         TextSpan(
                           text: "Have An Account Already?",
-                          style: TextStyle(fontSize: 16, color: Colors.grey[850]),
+                          style:
+                              TextStyle(fontSize: 16, color: Colors.grey[850]),
                           children: <TextSpan>[
                             TextSpan(
                                 text: " Login Now ",
                                 style: const TextStyle(
                                     fontSize: 16, color: Color(0xffD31919)),
                                 recognizer: TapGestureRecognizer()
-                                ..onTap =() {
-                                  Navigator.of(context).pushNamed('/');
-                                }
-                                    
-                            ),
+                                  ..onTap = () {
+                                    Navigator.of(context).pushNamed('/');
+                                  }),
                           ],
                         ),
                       ),
-                    
                     ],
                   ),
                 ),

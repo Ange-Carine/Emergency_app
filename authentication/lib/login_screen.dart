@@ -12,10 +12,13 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController _passwordTextController = TextEditingController();
-  final TextEditingController _emailTextController = TextEditingController();
+  // final TextEditingController _passwordTextController = TextEditingController();
+  // final TextEditingController _emailTextController = TextEditingController();
+  final _formfield = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
-  final _formKey = GlobalKey<FormState>();
+  bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +37,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(80.0),
                         bottomRight: Radius.circular(80.0))),
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 120),
-                  child: Text(
+                child: Padding(
+                  padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.3),
+                  child: const Text(
                     'Login',
                     style: TextStyle(
                         color: Color(0xfffefefe),
@@ -50,11 +54,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
                 child: Form(
-                  key: _formKey,
+                  key: _formfield,
                   child: Column(
                     children: [
                       reusableTextField(
-                        controller: _emailTextController,
+                        controller: _emailController,
                         labelText: 'Enter Email',
                         hintText: 'Enter Email',
                         isPaswordType: false,
@@ -63,18 +67,42 @@ class _LoginScreenState extends State<LoginScreen> {
                           Icons.email,
                           color: Color(0xffD31919),
                         ),
+                        validator: (value) {
+                          if (value!.isEmpty || !value.contains('@')) {
+                            return 'Please enter a valid email';
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(
                         height: 20,
                       ),
                       reusableTextField(
-                        controller: _passwordTextController,
+                        controller: _passwordController,
                         labelText: 'Password',
                         hintText: 'Password',
-                        isPaswordType: true,
+                        validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Please enter your password';
+                            }
+                            return null;
+                          },
+                        isPaswordType: _obscureText,
                         prefixIcon: const Icon(
                           Icons.key,
                           color: Color(0xffD31919),
+                        ),
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _obscureText = !_obscureText;
+                            });
+                          },
+                          icon: Icon(
+                            _obscureText
+                                ? Icons.visibility_off_outlined
+                                : Icons.visibility_outlined,
+                          ),
                         ),
                       ),
                       const SizedBox(
@@ -86,7 +114,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         text: 'LOGIN',
                         textColor: const Color(0xfffefefe),
                         backgroundColor: const Color(0xffD31919),
-                        onPressed: () {},
+                        onPressed: () {
+                          if (_formfield.currentState!.validate()) {
+                            _emailController.text.trim();
+                            _passwordController.text.trim();
+                          }
+                        },
                       ),
                       const SizedBox(
                         height: 5,
@@ -94,22 +127,21 @@ class _LoginScreenState extends State<LoginScreen> {
                       Text.rich(
                         TextSpan(
                           text: "Don't Have An Account?",
-                          style: TextStyle(fontSize: 16, color: Colors.grey[850]),
+                          style:
+                              TextStyle(fontSize: 16, color: Colors.grey[850]),
                           children: <TextSpan>[
                             TextSpan(
                                 text: " Register Now ",
                                 style: const TextStyle(
                                     fontSize: 16, color: Color(0xffD31919)),
                                 recognizer: TapGestureRecognizer()
-                                ..onTap =() {
-                                  Navigator.of(context).pushNamed('/register');
-                                }
-                                    
-                            ),
+                                  ..onTap = () {
+                                    Navigator.of(context)
+                                        .pushNamed('/register');
+                                  }),
                           ],
                         ),
                       ),
-                    
                     ],
                   ),
                 ),
