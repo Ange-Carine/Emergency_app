@@ -40,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         bottomRight: Radius.circular(80.0))),
                 child: Padding(
                   padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height * 0.3),
+                      top: MediaQuery.of(context).size.height * 0.25),
                   child: const Text(
                     'Login',
                     style: TextStyle(
