@@ -1,25 +1,27 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-import '../common_widgets/buttons.dart';
-import '../common_widgets/textfield.dart';
-import '../utils/constants/colors.dart';
+import '../../common_widgets/buttons.dart';
+import '../../common_widgets/textfield.dart';
+import '../../utils/constants/colors.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  // final TextEditingController _passwordTextController = TextEditingController();
-  // final TextEditingController _emailTextController = TextEditingController();
+class _SignupScreenState extends State<SignupScreen> {
   final _formfield = GlobalKey<FormState>();
   final _emailController = TextEditingController();
+  final _usernameController = TextEditingController();
+  final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
 
   bool _obscureText = true;
+  final _passwordRegex =
+      RegExp(r'^(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[^\w\s]).{7,}$');
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             children: [
               Container(
-                height: 300,
+                height: 220,
                 width: double.infinity,
                 decoration: const BoxDecoration(
                     color: primaryColor,
@@ -40,9 +42,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         bottomRight: Radius.circular(80.0))),
                 child: Padding(
                   padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height * 0.3),
+                      top: MediaQuery.of(context).size.height * 0.2),
                   child: const Text(
-                    'Login',
+                    'Register',
                     style: TextStyle(
                         color: sosWhite,
                         fontSize: 26,
@@ -59,9 +61,49 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     children: [
                       reusableTextField(
+                        controller: _usernameController,
+                        labelText: 'Full Name',
+                        hintText: 'Full Name',
+                        isPaswordType: false,
+                        keyboardType: TextInputType.emailAddress,
+                        prefixIcon: const Icon(
+                          Icons.person,
+                          color: primaryColor,
+                        ),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter your full name';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      reusableTextField(
+                        controller: _phoneController,
+                        labelText: 'Phone',
+                        hintText: 'Phone',
+                        isPaswordType: false,
+                        keyboardType: TextInputType.number,
+                        prefixIcon: const Icon(
+                          Icons.phone,
+                          color: primaryColor,
+                        ),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter your phone number';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      reusableTextField(
                         controller: _emailController,
-                        labelText: 'Enter Email',
-                        hintText: 'Enter Email',
+                        labelText: 'Email',
+                        hintText: 'Email',
                         isPaswordType: false,
                         keyboardType: TextInputType.emailAddress,
                         prefixIcon: const Icon(
@@ -82,12 +124,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         controller: _passwordController,
                         labelText: 'Password',
                         hintText: 'Password',
-                        validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Please enter your password';
-                            }
-                            return null;
-                          },
                         isPaswordType: _obscureText,
                         prefixIcon: const Icon(
                           Icons.key,
@@ -105,6 +141,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                 : Icons.visibility_outlined,
                           ),
                         ),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter a password';
+                          } else if(_passwordController.text.length < 8) {
+                            return "Password length should be atleast 8 characters";
+                          // }else if (!_passwordRegex.hasMatch(value)) {
+                          //   return 'Password should Contain at least one uppercase \none numeric value and one special character';
+                          } else {
+                            return null;
+                          }
+                        },
                       ),
                       const SizedBox(
                         height: 35,
@@ -112,14 +159,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       authButton(
                         height: 50,
                         width: 340,
-                        text: 'LOGIN',
+                        text: 'REGISTER',
                         textColor: sosWhite,
                         backgroundColor: primaryColor,
                         onPressed: () {
                           if (_formfield.currentState!.validate()) {
+                            _usernameController.text.trim();
+                            _phoneController.text.trim();
                             _emailController.text.trim();
                             _passwordController.text.trim();
-                            Navigator.of(context).pushNamed('/homescreen');
+                            Navigator.of(context).pushNamed('/login');
                           }
                         },
                       ),
@@ -128,18 +177,17 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       Text.rich(
                         TextSpan(
-                          text: "Don't Have An Account?",
+                          text: "Have An Account Already?",
                           style:
                               TextStyle(fontSize: 16, color: Colors.grey[850]),
                           children: <TextSpan>[
                             TextSpan(
-                                text: " Register Now ",
+                                text: " Login Now ",
                                 style: const TextStyle(
                                     fontSize: 16, color: primaryColor),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
-                                    Navigator.of(context)
-                                        .pushNamed('/register');
+                                    Navigator.of(context).pushNamed('/login');
                                   }),
                           ],
                         ),
