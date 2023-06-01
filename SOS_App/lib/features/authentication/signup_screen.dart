@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../common_widgets/buttons.dart';
 import '../../common_widgets/textfield.dart';
 import '../../utils/constants/colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -20,8 +21,8 @@ class _SignupScreenState extends State<SignupScreen> {
   final _passwordController = TextEditingController();
 
   bool _obscureText = true;
-  final _passwordRegex =
-      RegExp(r'^(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[^\w\s]).{7,}$');
+  // final _passwordRegex =
+  //     RegExp(r'^(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[^\w\s]).{7,}$');
 
   @override
   Widget build(BuildContext context) {
@@ -43,12 +44,13 @@ class _SignupScreenState extends State<SignupScreen> {
                 child: Padding(
                   padding: EdgeInsets.only(
                       top: MediaQuery.of(context).size.height * 0.2),
-                  child: const Text(
+                  child: Text(
                     'Register',
-                    style: TextStyle(
-                        color: sosWhite,
-                        fontSize: 26,
-                        fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.headlineSmall,
+                    // style: TextStyle(
+                    //     color: sosWhite,
+                    //     fontSize: 26,
+                    //     fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -144,10 +146,10 @@ class _SignupScreenState extends State<SignupScreen> {
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'Please enter a password';
-                          } else if(_passwordController.text.length < 8) {
+                          } else if (_passwordController.text.length < 8) {
                             return "Password length should be atleast 8 characters";
-                          // }else if (!_passwordRegex.hasMatch(value)) {
-                          //   return 'Password should Contain at least one uppercase \none numeric value and one special character';
+                            // }else if (!_passwordRegex.hasMatch(value)) {
+                            //   return 'Password should Contain at least one uppercase \none numeric value and one special character';
                           } else {
                             return null;
                           }
@@ -163,13 +165,22 @@ class _SignupScreenState extends State<SignupScreen> {
                         textColor: sosWhite,
                         backgroundColor: primaryColor,
                         onPressed: () {
-                          if (_formfield.currentState!.validate()) {
-                            _usernameController.text.trim();
-                            _phoneController.text.trim();
-                            _emailController.text.trim();
-                            _passwordController.text.trim();
-                            Navigator.of(context).pushNamed('/login');
-                          }
+                          FirebaseAuth.instance
+                              .createUserWithEmailAndPassword(
+                                  email: _emailController.text,
+                                  password: _passwordController.text)
+                              .then((value) {
+                                print('Account created successfully');
+                            if (_formfield.currentState!.validate()) {
+                              _usernameController.text.trim();
+                              _phoneController.text.trim();
+                              _emailController.text.trim();
+                              _passwordController.text.trim();
+                              Navigator.of(context).pushNamed('/login');
+                            }
+                          }).onError((error, stackTrace) {
+                            print("Error  ${error.toString()}");
+                          });
                         },
                       ),
                       const SizedBox(

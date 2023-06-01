@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -41,12 +42,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Padding(
                   padding: EdgeInsets.only(
                       top: MediaQuery.of(context).size.height * 0.25),
-                  child: const Text(
+                  child: Text(
                     'Login',
-                    style: TextStyle(
-                        color: sosWhite,
-                        fontSize: 26,
-                        fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.headlineSmall,
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -83,11 +81,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         labelText: 'Password',
                         hintText: 'Password',
                         validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Please enter your password';
-                            }
-                            return null;
-                          },
+                          if (value!.isEmpty) {
+                            return 'Please enter your password';
+                          }
+                          return null;
+                        },
                         isPaswordType: _obscureText,
                         prefixIcon: const Icon(
                           Icons.key,
@@ -116,11 +114,19 @@ class _LoginScreenState extends State<LoginScreen> {
                         textColor: sosWhite,
                         backgroundColor: primaryColor,
                         onPressed: () {
-                          if (_formfield.currentState!.validate()) {
-                            _emailController.text.trim();
-                            _passwordController.text.trim();
-                            Navigator.of(context).pushNamed('/homescreen');
-                          }
+                          FirebaseAuth.instance
+                              .signInWithEmailAndPassword(
+                                  email: _emailController.text,
+                                  password: _passwordController.text)
+                              .then((value) {
+                            if (_formfield.currentState!.validate()) {
+                              _emailController.text.trim();
+                              _passwordController.text.trim();
+                              Navigator.of(context).pushNamed('/homescreen');
+                            }
+                          }).onError((error, stackTrace) {
+                            print("Error  ${error.toString()}");
+                          });
                         },
                       ),
                       const SizedBox(
@@ -138,8 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     fontSize: 16, color: primaryColor),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
-                                    Navigator.of(context)
-                                        .pushNamed('/');
+                                    Navigator.of(context).pushNamed('/');
                                   }),
                           ],
                         ),

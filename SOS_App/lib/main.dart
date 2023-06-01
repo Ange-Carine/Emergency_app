@@ -1,10 +1,15 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
+import 'config/themes/theme.dart';
+import 'features/location/current_location.dart';
 import 'features/home_screen/home.dart';
 import 'features/authentication/login_screen.dart';
 import 'features/authentication/signup_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -22,17 +27,16 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'SOS Auth',
-      theme: ThemeData(
-        primarySwatch: Colors.red,
-      ),
+      theme: SOSTheme.lightTheme,
+      darkTheme: SOSTheme.darkTheme,
+      themeMode: ThemeMode.light,
       initialRoute: '/',
-       routes: {
-        '/':(context) => const SignupScreen(),
-        '/login':(context) => const LoginScreen(),
-        '/homescreen':(context) => const HomeScreen(),
+      routes: {
+        '/': (context) => const SignupScreen(),
+        '/login': (context) => const LoginScreen(),
+        '/homescreen': (context) => const HomeScreen(),
+        '/location': (context) => const CurrrentLocation(),
       },
     );
   }
 }
-
-
