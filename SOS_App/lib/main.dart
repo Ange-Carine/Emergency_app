@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'config/themes/theme.dart';
 import 'features/location/current_location.dart';
 import 'features/home_screen/home.dart';
-import 'features/authentication/login_screen.dart';
-import 'features/authentication/signup_screen.dart';
+import 'features/authentication/login/screens/login.dart';
+import 'features/authentication/sign_up/screens/signup.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

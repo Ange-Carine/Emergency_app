@@ -1,28 +1,26 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-import '../../common_widgets/buttons.dart';
-import '../../common_widgets/textfield.dart';
-import '../../utils/constants/colors.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import '../../../../common_widgets/buttons.dart';
+import '../../../../common_widgets/textfield.dart';
+import '../../../../utils/constants/colors.dart';
 
-class SignupScreen extends StatefulWidget {
-  const SignupScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<SignupScreen> createState() => _SignupScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _SignupScreenState extends State<SignupScreen> {
+class _LoginScreenState extends State<LoginScreen> {
+  // final TextEditingController _passwordTextController = TextEditingController();
+  // final TextEditingController _emailTextController = TextEditingController();
   final _formfield = GlobalKey<FormState>();
   final _emailController = TextEditingController();
-  final _usernameController = TextEditingController();
-  final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
 
   bool _obscureText = true;
-  // final _passwordRegex =
-  //     RegExp(r'^(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[^\w\s]).{7,}$');
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +32,7 @@ class _SignupScreenState extends State<SignupScreen> {
           child: Column(
             children: [
               Container(
-                height: 220,
+                height: 300,
                 width: double.infinity,
                 decoration: const BoxDecoration(
                     color: primaryColor,
@@ -43,14 +41,10 @@ class _SignupScreenState extends State<SignupScreen> {
                         bottomRight: Radius.circular(80.0))),
                 child: Padding(
                   padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height * 0.2),
+                      top: MediaQuery.of(context).size.height * 0.25),
                   child: Text(
-                    'Register',
+                    'Login',
                     style: Theme.of(context).textTheme.headlineSmall,
-                    // style: TextStyle(
-                    //     color: sosWhite,
-                    //     fontSize: 26,
-                    //     fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -63,49 +57,9 @@ class _SignupScreenState extends State<SignupScreen> {
                   child: Column(
                     children: [
                       reusableTextField(
-                        controller: _usernameController,
-                        labelText: 'Full Name',
-                        hintText: 'Full Name',
-                        isPaswordType: false,
-                        keyboardType: TextInputType.emailAddress,
-                        prefixIcon: const Icon(
-                          Icons.person,
-                          color: primaryColor,
-                        ),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter your full name';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      reusableTextField(
-                        controller: _phoneController,
-                        labelText: 'Phone',
-                        hintText: 'Phone',
-                        isPaswordType: false,
-                        keyboardType: TextInputType.number,
-                        prefixIcon: const Icon(
-                          Icons.phone,
-                          color: primaryColor,
-                        ),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter your phone number';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      reusableTextField(
                         controller: _emailController,
-                        labelText: 'Email',
-                        hintText: 'Email',
+                        labelText: 'Enter Email',
+                        hintText: 'Enter Email',
                         isPaswordType: false,
                         keyboardType: TextInputType.emailAddress,
                         prefixIcon: const Icon(
@@ -126,6 +80,12 @@ class _SignupScreenState extends State<SignupScreen> {
                         controller: _passwordController,
                         labelText: 'Password',
                         hintText: 'Password',
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter your password';
+                          }
+                          return null;
+                        },
                         isPaswordType: _obscureText,
                         prefixIcon: const Icon(
                           Icons.key,
@@ -143,17 +103,6 @@ class _SignupScreenState extends State<SignupScreen> {
                                 : Icons.visibility_outlined,
                           ),
                         ),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter a password';
-                          } else if (_passwordController.text.length < 8) {
-                            return "Password length should be atleast 8 characters";
-                            // }else if (!_passwordRegex.hasMatch(value)) {
-                            //   return 'Password should Contain at least one uppercase \none numeric value and one special character';
-                          } else {
-                            return null;
-                          }
-                        },
                       ),
                       const SizedBox(
                         height: 35,
@@ -161,22 +110,19 @@ class _SignupScreenState extends State<SignupScreen> {
                       authButton(
                         height: 50,
                         width: 340,
-                        text: 'REGISTER',
+                        text: 'LOGIN',
                         textColor: sosWhite,
                         backgroundColor: primaryColor,
                         onPressed: () {
                           FirebaseAuth.instance
-                              .createUserWithEmailAndPassword(
+                              .signInWithEmailAndPassword(
                                   email: _emailController.text,
                                   password: _passwordController.text)
                               .then((value) {
-                                print('Account created successfully');
                             if (_formfield.currentState!.validate()) {
-                              _usernameController.text.trim();
-                              _phoneController.text.trim();
                               _emailController.text.trim();
                               _passwordController.text.trim();
-                              Navigator.of(context).pushNamed('/login');
+                              Navigator.of(context).pushNamed('/homescreen');
                             }
                           }).onError((error, stackTrace) {
                             print("Error  ${error.toString()}");
@@ -188,17 +134,17 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                       Text.rich(
                         TextSpan(
-                          text: "Have An Account Already?",
+                          text: "Don't Have An Account?",
                           style:
                               TextStyle(fontSize: 16, color: Colors.grey[850]),
                           children: <TextSpan>[
                             TextSpan(
-                                text: " Login Now ",
+                                text: " Register Now ",
                                 style: const TextStyle(
                                     fontSize: 16, color: primaryColor),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
-                                    Navigator.of(context).pushNamed('/login');
+                                    Navigator.of(context).pushNamed('/');
                                   }),
                           ],
                         ),
